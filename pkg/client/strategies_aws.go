@@ -18,6 +18,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"github.com/sirupsen/logrus"
 	"errors"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
@@ -74,6 +75,10 @@ func reconcileAWSStrategyMap(ctx context.Context, client client.Client, timeConf
 			return errorUtil.Wrapf(err, "failed to reconcile redis strategy")
 		}
 
+
+		logrus.Info(fmt.Sprintf("bgbg Setting postgresStrategy %s", postgresStrategy))
+
+
 		// setting postgres and redis values to be updated strategies
 		awsStratConfig.Data[postgresStratKey] = postgresStrategy
 		awsStratConfig.Data[redisStratKey] = redisStrategy
@@ -111,6 +116,10 @@ func reconcilePostgresStrategy(config, tier, backupWindow, maintenanceWindow str
 	if rdsCreateConfig.PreferredMaintenanceWindow == nil || *rdsCreateConfig.PreferredMaintenanceWindow != maintenanceWindow {
 		rdsCreateConfig.PreferredMaintenanceWindow = aws.String(maintenanceWindow)
 	}
+
+	autoUpgrade := new(bool)
+	*autoUpgrade = false
+	rdsCreateConfig.AutoMinorVersionUpgrade = autoUpgrade
 
 	// marshall the create db instance input struct to json
 	rdsMarshalledConfig, err := json.Marshal(rdsCreateConfig)
