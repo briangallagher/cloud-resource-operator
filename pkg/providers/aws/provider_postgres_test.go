@@ -453,6 +453,7 @@ func buildAvailableDBInstance(testID string) []*rds.DBInstance {
 		{
 			DBInstanceIdentifier:       aws.String(testID),
 			DBInstanceStatus:           aws.String("available"),
+			AutoMinorVersionUpgrade:    aws.Bool(false),
 			AvailabilityZone:           aws.String("test-availabilityZone"),
 			DBInstanceArn:              aws.String("arn-test"),
 			DeletionProtection:         aws.Bool(defaultAwsPostgresDeletionProtection),
@@ -539,6 +540,7 @@ func buildPendingModifiedDBInstance(testID string) []*rds.DBInstance {
 			DBInstanceIdentifier:       aws.String(testID),
 			DBInstanceStatus:           aws.String("available"),
 			AvailabilityZone:           aws.String("test-availabilityZone"),
+			AutoMinorVersionUpgrade:    aws.Bool(false),
 			DBInstanceArn:              aws.String("arn-test"),
 			DeletionProtection:         aws.Bool(defaultAwsPostgresDeletionProtection),
 			MasterUsername:             aws.String(defaultAwsPostgresUser),
