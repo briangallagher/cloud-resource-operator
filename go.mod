@@ -35,10 +35,12 @@ require (
 	k8s.io/klog v1.0.0 // indirect
 	k8s.io/kube-openapi v0.0.0-20190918143330-0270cf2f1c1d
 	sigs.k8s.io/controller-runtime v0.3.0
+	github.com/gomodule/redigo v2.0.0+incompatible // indirect
 )
 
 // Pinned to kubernetes-1.15.4
 replace (
+	bitbucket.org/ww/goautoneg => github.com/briangallagher/goautoneg v0.0.0-20120707110453-a547fc61f48d
 	k8s.io/api => k8s.io/api v0.0.0-20190918195907-bd6ac527cfd2
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.0.0-20190918201827-3de75813f604
 	k8s.io/apimachinery => k8s.io/apimachinery v0.0.0-20190817020851-f2f3a405f61d
