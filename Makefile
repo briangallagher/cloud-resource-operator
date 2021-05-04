@@ -1,16 +1,16 @@
 IMAGE_REG ?= quay.io
-IMAGE_ORG ?= integreatly
+IMAGE_ORG ?= bgallagher
 IMAGE_NAME ?= cloud-resource-operator
 OPERATOR_IMG = $(IMAGE_REG)/$(IMAGE_ORG)/$(IMAGE_NAME):v$(VERSION)
 MANIFEST_NAME ?= cloud-resources
 NAMESPACE=cloud-resource-operator
-PREV_VERSION=0.23.0
-VERSION=0.24.0
+PREV_VERSION=0.24.0
+VERSION=0.25.0
 COMPILE_TARGET=./tmp/_output/bin/$(IMAGE_NAME)
 UPGRADE ?= true
 CHANNEL ?= rhmi
 
-PREVIOUS_OPERATOR_VERSIONS="0.23.0"
+PREVIOUS_OPERATOR_VERSIONS="0.24.0,0.23.0"
 
 SHELL=/bin/bash
 
@@ -66,7 +66,7 @@ code/gen: manifests kustomize generate
 .PHONY: gen/csv
 gen/csv:
 	@$(KUSTOMIZE) build config/manifests | operator-sdk generate packagemanifests --kustomize-dir=config/manifests --output-dir packagemanifests/ --version ${VERSION} --default-channel --channel integreatly
-	@sed -i "s/Version = \"${PREV_VERSION}\"/Version = \"${VERSION}\"/g" version/version.go
+#	@sed -i "s/Version = \"${PREV_VERSION}\"/Version = \"${VERSION}\"/g" version/version.go
 	@yq w -i "packagemanifests/${VERSION}/cloud-resource-operator.clusterserviceversion.yaml" metadata.annotations.containerImage ${OPERATOR_IMG}
 	@yq w -i "packagemanifests/${VERSION}/cloud-resource-operator.clusterserviceversion.yaml" metadata.name cloud-resources.v$(VERSION)
 	@yq w -i "packagemanifests/${VERSION}/cloud-resource-operator.clusterserviceversion.yaml" spec.install.spec.deployments[0].spec.template.spec.containers[0].image ${OPERATOR_IMG}
